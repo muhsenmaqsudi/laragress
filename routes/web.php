@@ -21,3 +21,11 @@ Route::get('pay', 'PayOrderController@store');
 
 Route::get('channels', 'ChannelController@index');
 Route::get('posts/create', 'PostController@create');
+
+Route::get('/postcards', function (\App\PostCardSendingService $postCardSendingService) {
+    $postCardSendingService->hello('Hello from muhsen maqsudi', 'test@test.com');
+});
+
+Route::get('/facades', function () {
+    \App\Postcard::hello('234', 'abc');
+});
