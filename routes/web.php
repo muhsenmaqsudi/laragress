@@ -29,3 +29,9 @@ Route::get('/postcards', function (\App\PostCardSendingService $postCardSendingS
 Route::get('/facades', function () {
     \App\Postcard::hello('234', 'abc');
 });
+
+Route::get('example', function () {
+    return view('example', [
+        'info' => 'Very cool information'
+    ]);
+});
