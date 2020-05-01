@@ -35,3 +35,11 @@ Route::get('example', function () {
         'info' => 'Very cool information'
     ]);
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+// Laravel socialite
+Route::get('login/github', 'Auth\LoginController@redirectToProvider');
+Route::get('login/github/callback', 'Auth\LoginController@handleProviderCallback');
