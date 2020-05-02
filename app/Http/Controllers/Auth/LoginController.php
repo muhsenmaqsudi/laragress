@@ -44,33 +44,36 @@ class LoginController extends Controller
     /**
      * Redirect the user to the GitHub authentication page.
      *
+     * @param $provider
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function redirectToProvider()
+    public function redirectToProvider($provider)
     {
-        return Socialite::driver('github')->redirect();
+        return Socialite::driver($provider)->redirect();
     }
 
     /**
      * Obtain the user information from GitHub.
      *
+     * @param $provider
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function handleProviderCallback()
+    public function handleProviderCallback($provider)
     {
-        $githubUser = Socialite::driver('github')->user();
+        /** @var \Laravel\Socialite\Contracts\User $providedUser  */
+        $providedUser = Socialite::driver($provider)->stateless()->user();
 
-        $user = User::where('provider_id', $githubUser->getId())->first();
+        $user = User::where('provider_id', $providedUser->getId())->first();
 
         if (!$user) {
             // add user to database
             $user = User::create([
-                'email' => $githubUser->getEmail(),
-                'name' => $githubUser->getName(),
-                'provider_id' => $githubUser->getId(),
+                'email' => $providedUser->getEmail(),
+                'name' => $providedUser->getName(),
+                'provider_id' => $providedUser->getId(),
+                'provider' => $provider
             ]);
         }
-
 
         // login the user
         Auth::login($user, true);
