@@ -2,21 +2,12 @@
 
 namespace App\QueryFilters;
 
-use Closure;
-use Illuminate\Database\Query\Builder;
-use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
 
-class Sort
+class Sort extends Filter
 {
-    public function handle($request, Closure $next)
+    protected function applyFilter(Builder $builder)
     {
-        if (! request()->has('sort')) {
-            return $next($request);
-        }
-
-        /** @var Builder $builder */
-        $builder = $next($request);
-
-        return $builder->orderBy('title', request('sort'));
+        return $builder->orderBy('title', request($this->filterName()));
     }
 }

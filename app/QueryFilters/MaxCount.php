@@ -1,13 +1,16 @@
 <?php
 
+
 namespace App\QueryFilters;
+
 
 use Illuminate\Database\Eloquent\Builder;
 
-class Active extends Filter
+class MaxCount extends Filter
 {
+
     protected function applyFilter(Builder $builder)
     {
-        return $builder->where($this->filterName(), request($this->filterName()));
+        return $builder->take(request($this->filterName()));
     }
 }
