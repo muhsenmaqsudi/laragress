@@ -45,3 +45,5 @@ Route::get('login/{provider}', 'Auth\LoginController@redirectToProvider');
 Route::get('login/{provider}/callback', 'Auth\LoginController@handleProviderCallback');
 
 Route::get('collections', 'CollectionController@index');
+
+Route::get('posts', 'PostController@index');
