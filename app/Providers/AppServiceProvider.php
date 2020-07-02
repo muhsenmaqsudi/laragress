@@ -5,7 +5,6 @@ namespace App\Providers;
 use App\Billing\BankPaymentGateway;
 use App\Billing\CreditPaymentGateway;
 use App\Billing\PaymentGatewayContract;
-use App\Channel;
 use App\Http\View\Composers\ChannelsComposer;
 use App\PostCardSendingService;
 use Illuminate\Support\Facades\View;

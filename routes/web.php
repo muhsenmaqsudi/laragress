@@ -47,3 +47,6 @@ Route::get('login/{provider}/callback', 'Auth\LoginController@handleProviderCall
 Route::get('collections', 'CollectionController@index');
 
 Route::get('posts', 'PostController@index');
+Route::get('post/{postId}', 'PostController@show');
+
+Route::get('posts-filter', 'FilterPostsController');
