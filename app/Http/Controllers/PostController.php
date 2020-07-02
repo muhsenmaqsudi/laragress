@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Channel;
 use App\Post;
 use Illuminate\Http\Request;
+use Illuminate\Pipeline\Pipeline;
 
 class PostController extends Controller
 {
@@ -12,15 +12,15 @@ class PostController extends Controller
     {
         $posts = Post::query();
 
-        if (request()->has('active')) {
-            $posts->where('active', request('active'));
-        }
-
-        if (request()->has('sort')) {
-            $posts->orderBy('title', request('sort'));
-        }
-
-        return $posts->get();
+        /** @var Pipeline $pipeline */
+        $pipeline = app(Pipeline::class);
+        $posts = $pipeline->send(Post::query())
+            ->through([
+                \App\QueryFilters\Active::class,
+                \App\QueryFilters\Sort::class
+            ])
+            ->thenReturn()->get();
+        return $posts;
     }
 
     public function create()
