@@ -50,3 +50,10 @@ Route::get('posts', 'PostController@index');
 Route::get('post/{postId}', 'PostController@show');
 
 Route::get('posts-filter', 'FilterPostsController');
+
+
+Route::get('macros', function () {
+//    return \Illuminate\Support\Str::partNumber(12323252526323);
+//    return \Illuminate\Support\Str::prefix('last', 'prefix');
+//    return \Illuminate\Support\Facades\Response::errorJson('testing');
+});
