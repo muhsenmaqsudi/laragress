@@ -26,8 +26,24 @@ Route::get('/postcards', function (\App\PostCardSendingService $postCardSendingS
     $postCardSendingService->hello('Hello from muhsen maqsudi', 'test@test.com');
 });
 
+Route::get('/reflection', function () {
+   $reflectedClass = new ReflectionClass(\App\Http\Controllers\HomeController::class);
+   dd($reflectedClass->getMethods());
+});
+
+Route::__callStatic('get', array('/test', function() {
+    return 'testing';
+}));
+
+\Illuminate\Support\Facades\App::make('router')->get('/test2', function () {
+   return 'testing2';
+});
+
+
 Route::get('/facades', function () {
-    \App\Postcard::hello('234', 'abc');
+    app()->make('cache')->put('test', '123');
+    dd(\Illuminate\Support\Facades\Cache::get('test'));
+//    \App\Postcard::hello('234', 'abc');
 });
 
 Route::get('example', function () {
