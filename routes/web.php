@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,7 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    dd(Str::snake(class_basename(\App\QueryFilters\Active::class)));
+//    return view('welcome');
 });
 
 Route::get('pay', 'PayOrderController@store');
@@ -73,3 +75,5 @@ Route::get('macros', function () {
 //    return \Illuminate\Support\Str::prefix('last', 'prefix');
 //    return \Illuminate\Support\Facades\Response::errorJson('testing');
 });
+
+Route::get('email', 'EmailController@sendEmail');
