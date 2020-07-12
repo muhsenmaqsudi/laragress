@@ -77,3 +77,18 @@ Route::get('macros', function () {
 });
 
 Route::get('email', 'EmailController@sendEmail');
+
+Route::prefix('api-resources')->group(function () {
+    Route::get('users', function () {
+        return new \App\Http\Resources\UserCollection(\App\User::all()->load('posts'));
+    });
+    Route::get('posts', function () {
+        return new \App\Http\Resources\PostCollection(\App\Post::all()->load('user'));
+    });
+    Route::get('user', function () {
+        return new \App\Http\Resources\UserResource(\App\User::find(1)->load('posts'));
+    });
+    Route::get('post', function () {
+        return new \App\Http\Resources\PostResource(\App\Post::find(1)->load('user'));
+    });
+});

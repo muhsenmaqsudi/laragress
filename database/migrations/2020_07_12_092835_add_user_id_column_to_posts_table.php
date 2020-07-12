@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddActiveColumnToPostsTable extends Migration
+class AddUserIdColumnToPostsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddActiveColumnToPostsTable extends Migration
     public function up()
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->boolean('active')->default(0)->after('body');
+            $table->unsignedInteger('user_id')->after('active');
         });
     }
 
@@ -26,7 +26,7 @@ class AddActiveColumnToPostsTable extends Migration
     public function down()
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->dropColumn('active');
+            $table->dropColumn('user_id');
         });
     }
 }

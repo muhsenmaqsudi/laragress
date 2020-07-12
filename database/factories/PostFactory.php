@@ -9,7 +9,8 @@ $factory->define(Post::class, function (Faker $faker) {
     return [
         'title' => $faker->sentence,
         'body' => $faker->text,
-        'active' => false
+        'active' => false,
+        'user_id' => factory(\App\User::class)
     ];
 });
 
@@ -17,6 +18,7 @@ $factory->state(Post::class, 'active', function (Faker $faker) {
     return [
         'title' => $faker->sentence,
         'body' => $faker->text,
-        'active' => true
+        'active' => true,
+        'user_id' => factory(\App\User::class)
     ];
 });
