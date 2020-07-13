@@ -92,3 +92,11 @@ Route::prefix('api-resources')->group(function () {
         return new \App\Http\Resources\PostResource(\App\Post::find(1)->load('user'));
     });
 });
+
+Route::prefix('broadcasting')->group(function () {
+    Route::get('/fire', function () {
+        event(new \App\Events\TestEvent());
+        return 'ok';
+    });
+    Route::view('/socketio', 'broadcasting.socketio');
+});
