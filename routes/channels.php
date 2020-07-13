@@ -18,6 +18,5 @@ Broadcast::channel('App.User.{id}', function ($user, $id) {
 });
 
 Broadcast::channel('test', function ($user) {
-    dd($user);
     return true; // just allow all authenticated users;
 });
