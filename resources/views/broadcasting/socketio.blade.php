@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Laravel</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
 
@@ -13,7 +14,7 @@
 
 <script src="{{ asset('/js/app.js') }}"></script>
 <script>
-    Echo.channel('laravel_database_test')
+    Echo.channel('laravel_database_private-test')
         .listen('TestEvent', e => {
             console.log(e)
         })

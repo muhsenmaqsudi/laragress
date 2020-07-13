@@ -8,7 +8,9 @@ use App\Billing\PaymentGatewayContract;
 use App\Http\View\Composers\ChannelsComposer;
 use App\Mixins\StrMixins;
 use App\PostCardSendingService;
+use App\User;
 use Illuminate\Routing\ResponseFactory;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
@@ -68,5 +70,8 @@ class AppServiceProvider extends ServiceProvider
                 'error_code' => 123
             ];
         });
+
+        $user = factory(User::class)->make();
+        Auth::login($user);
     }
 }
