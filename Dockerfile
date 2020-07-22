@@ -22,6 +22,10 @@ RUN composer dump-autoload --no-scripts --no-dev --optimize
 
 RUN pecl install redis && docker-php-ext-enable redis
 
+#COPY ./storage/docker/start.sh /usr/local/bin/start
+
 EXPOSE 9000
 
 CMD ["php-fpm"]
+
+#CMD sh "/usr/local/bin/start" && php-fpm

@@ -6,27 +6,31 @@ services:
     container_name: laradvance_app
     user: "1000:1000"
     restart: unless-stopped
+    depends_on:
+      - db
+      - redis
     volumes:
       - ./:/srv
+    environment:
+      CONTAINER_ROLE: app
+      REDIS_HOST: redis
+      DB_HOST: db
   db:
-    image: mysql:latest
+    image: mysql:8
     container_name: laradvance_db
     restart: unless-stopped
-    tty: true
     command: --default-authentication-plugin=mysql_native_password
     environment:
       MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_USER: ${DB_USERNAME}
-      SERVICE_TAGS: dev
-      SERVICE_NAME: mysql
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     ports:
-      - "4406:3306"
+      - "13306:3306"
     volumes:
       - dbdata:/var/lib/mysql
   nginx:
-    image: nginx:stable-alpine
+    image: nginx:stable
     container_name: laradvance_nginx
     restart: unless-stopped
     ports:
@@ -39,12 +43,34 @@ services:
       - db
   redis:
     container_name: laradvance_redis
-    image: redis:latest
+    image: redis:alpine
     volumes:
       - redisdata:/data
     restart: always
     ports:
-      - "7379:6379"
+      - "16379:6379"
+  scheduler:
+    image: muhsenmaqsudi/laradvance
+    container_name: laradvance_scheduler
+    depends_on:
+      - app
+    volumes:
+      - ./:/srv
+    environment:
+      CONTAINER_ROLE: scheduler
+      REDIS_HOST: redis
+      DB_HOST: db
+  queue:
+    image: muhsenmaqsudi/laradvance
+    container_name: laraadvance_queue
+    depends_on:
+      - app
+    volumes:
+      - ./:/srv
+    environment:
+      CONTAINER_ROLE: queue
+      REDIS_HOST: redis
+      DB_HOST: db
 volumes:
   dbdata:
     driver: local
