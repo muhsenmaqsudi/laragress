@@ -1,42 +1,11 @@
-RUN apk --update add supervisor
-#
-#--------------------------------------------------------------------------
-# Optional Supervisord Configuration
-#--------------------------------------------------------------------------
-#
-# Modify the ./supervisor.conf file to match your App's requirements.
-# Make sure you rebuild your container with every change.
-#
+FROM muhsenmaqsudi/laradvance
 
-COPY supervisord.conf /etc/supervisord.conf
+RUN apt-get update && \
+    apt-get install -y supervisor
 
-ENTRYPOINT ["/usr/bin/supervisord", "-n", "-c",  "/etc/supervisord.conf"]
+COPY supervisord.conf /etc/supervisor/
+COPY supervisord.d /etc/supervisor/conf.d/
 
-#
-#--------------------------------------------------------------------------
-# Optional Software's Installation
-#--------------------------------------------------------------------------
-#
-# If you need to modify this image, feel free to do it right here.
-#
-    # -- Your awesome modifications go here -- #
-
-#
-#--------------------------------------------------------------------------
-# Check PHP version
-#--------------------------------------------------------------------------
-#
-
-RUN php -v | head -n 1 | grep -q "PHP ${PHP_VERSION}."
-
-#
-#--------------------------------------------------------------------------
-# Final Touch
-#--------------------------------------------------------------------------
-#
-
-# Clean up
-RUN rm /var/cache/apk/* \
-    && mkdir -p /var/www
+ENTRYPOINT ["/usr/bin/supervisord", "-n", "-c",  "/etc/supervisor/supervisord.conf"]
 
 WORKDIR /etc/supervisor/conf.d/

@@ -1,4 +1,4 @@
-version: "3"
+version: "3.7"
 services:
   app:
     build: .
@@ -10,9 +10,8 @@ services:
       - db
       - redis
     volumes:
-      - ./:/srv
+      - ./:/srv:delegated
     environment:
-      CONTAINER_ROLE: app
       REDIS_HOST: redis
       DB_HOST: db
   db:
@@ -29,9 +28,9 @@ services:
       - "13306:3306"
     volumes:
       - dbdata:/var/lib/mysql
-  nginx:
+  server:
     image: nginx:stable
-    container_name: laradvance_nginx
+    container_name: laradvance_server
     restart: unless-stopped
     ports:
       - "80:80"
@@ -49,28 +48,25 @@ services:
     restart: always
     ports:
       - "16379:6379"
-  scheduler:
-    image: muhsenmaqsudi/laradvance
-    container_name: laradvance_scheduler
-    depends_on:
-      - app
+  worker:
+    build:
+      context: ./storage/docker/php-worker
+    container_name: laradvance_worker
+    restart: unless-stopped
     volumes:
-      - ./:/srv
-    environment:
-      CONTAINER_ROLE: scheduler
-      REDIS_HOST: redis
-      DB_HOST: db
-  queue:
-    image: muhsenmaqsudi/laradvance
-    container_name: laraadvance_queue
-    depends_on:
-      - app
+      - ./:/srv:delegated
+      - ./storage/docker/php-worker/supervisord.conf:/etc/supervisor/supervisord.conf
+      - ./storage/docker/php-worker/supervisord.d:/etc/supervisor/conf.d
+  websocket:
+    image: node:lts
+    container_name: laradvance_websocket
+    entrypoint: ["yarn", "run", "websocket"]
+    restart: unless-stopped
+    ports:
+      - 6001:6001
     volumes:
-      - ./:/srv
-    environment:
-      CONTAINER_ROLE: queue
-      REDIS_HOST: redis
-      DB_HOST: db
+      - ./:/srv:z
+    working_dir: /srv
 volumes:
   dbdata:
     driver: local

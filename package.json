@@ -8,7 +8,8 @@
         "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
         "prod": "npm run production",
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "echo:start": "laravel-echo-server start"
+        "echo:start": "laravel-echo-server start",
+        "websocket": "node server.js"
     },
     "devDependencies": {
         "axios": "^0.19",
@@ -25,6 +26,7 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "dotenv": "^8.2.0",
         "laravel-echo": "^1.8.0",
         "laravel-echo-server": "^1.6.2",
         "socket.io-client": "^2.3.0"
