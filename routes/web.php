@@ -100,3 +100,7 @@ Route::prefix('broadcasting')->group(function () {
     });
     Route::view('/socketio', 'broadcasting.socketio');
 });
+
+
+Route::view('login', 'login');
+Route::post('login', 'AuthController@login')->name('login');
