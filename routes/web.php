@@ -104,3 +104,6 @@ Route::prefix('broadcasting')->group(function () {
 
 Route::view('login', 'login');
 Route::post('login', 'AuthController@login')->name('login');
+
+
+Route::get('/category','CategoryController@index')->name('category');

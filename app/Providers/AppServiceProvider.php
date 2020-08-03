@@ -72,8 +72,8 @@ class AppServiceProvider extends ServiceProvider
         });
 
 //        $user = factory(User::class)->make();
-//        $user = User::first();
-//        Auth::login($user);
+        $user = User::first();
+        Auth::login($user);
 //        Auth::logout();
     }
 }
