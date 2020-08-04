@@ -7,6 +7,8 @@ use App\Billing\CreditPaymentGateway;
 use App\Billing\PaymentGatewayContract;
 use App\Http\View\Composers\ChannelsComposer;
 use App\Mixins\StrMixins;
+use App\Observers\PostObserver;
+use App\Post;
 use App\PostCardSendingService;
 use App\User;
 use Illuminate\Routing\ResponseFactory;
@@ -75,5 +77,7 @@ class AppServiceProvider extends ServiceProvider
         $user = User::first();
         Auth::login($user);
 //        Auth::logout();
+
+        Post::observe(PostObserver::class);
     }
 }
